@@ -1,0 +1,15 @@
+ORI $R1 $R0 0
+ORI $R2 $R0 16
+ADDI $R5 $R0 -1
+
+loop:
+	ANDI $R3 $R4 1
+	ADD $R1 $R3 $R1 
+	SRLI $R4 $R4 1
+	SUB $R2 $R2 $R5 
+	
+	BEQ $R2 $R0 2
+	
+	j -5
+	
+exit

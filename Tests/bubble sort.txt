@@ -1,0 +1,45 @@
+				# Following code store 5 1 2 4 7 in addresses 0, 1, 2, 3, 4 respectively.
+				#
+ADDI $R1 $R0 0 		 	# initialize array at address 0
+ADDI $R2 $R0 5
+ADDI $R3 $R0 4
+ADDI $R4 $R0 3
+ADDI $R5 $R0 2
+ADDI $R6 $R0 1
+ADDI $R7 $R0 0 
+SW $R2 $R1 0
+SW $R3 $R1 1
+SW $R4 $R1 2
+SW $R5 $R1 3
+SW $R6 $R1 4
+SW $R7 $R1 5
+				#
+			 	# R1 = array address and inner loop, R2 = size and outer loop index
+			 	# R3 = flag
+ADDI $R2 $R0 6 		 	# Size of array
+ADDI $R3 $R0 1 		 	# Flag to know if array is sorted or not.
+			 	#
+loop:			 	# address == 15
+	ADDI $R2 $R2 -1    	# decrement length for outer loop
+	BEQ $R0 $R2 15    	# if length = 0, exit outer loop. ADDRESS == 16, TO 31.
+			 	#
+			 	# Inner loop for comparing adjacent elements
+	inner_loop:	 	# address == 17
+		LW $R5 $R1 0   	# load current element
+		LW $R6 $R1 1  	# load next element
+		SLT $R7 $R6 $R5 # check if next element is less than current element (R6 < R5)
+		BEQ $R0 $R7 4 	# if not less, skip swap. ADDRESS == 20, TO 24.
+		SW $R6 $R1 0   	# swap elements
+		SW $R5 $R1 1 
+		ADDI $R4 $R0 1 	# set flag to 1 (indicates array was not sorted)
+	     skip:	 	# address == 24
+		ADDI $R1 $R1 1  # increment index
+		BLT $R2 $R1 -8 	# continue inner loop until all elements compared. ADDRESS == 25, TO 17.
+			 	#
+			 	# Check if array is already sorted
+		BEQ $R0 $R4 5 	# if array is sorted, exit loop. ADDRESS == 26, TO 31.
+		ADD $R4 $R0 $R0 # reset flag to 0
+		ADD $R1 $R0 $R0 # reset array address
+		J -14  		# ADDRESS == 29, TO 15
+			 	#
+end:			 	# ADDRRES == 30
